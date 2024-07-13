@@ -85,8 +85,55 @@ class Robot:
         str: The robot's status.
         """
         return self.status
+    
+    def get_battery_level(self) -> int:
+        """
+        Get the robot's battery level.
+        """
+        return self.battery_level
+    
+    @staticmethod
+    def check_battery_level(battery_level: int) -> str:
+        """
+        Check the robot's battery level.
 
+        Parameters:
+        -
+        battery_level (int): The robot's battery level.
 
+        Returns:
+        -------
+        str: The robot's battery level.
+        """
+        if battery_level < 30:
+            return "Low battery, please charge."
+        return "Battery level is sufficient"
+    
+    @staticmethod
+    def check_status(status: str) -> str:
+        """
+        Check the robot's status.
+
+        Parameters:
+        -
+        status (str): The robot's status.
+
+        Returns:
+        -------
+        str: The robot's status.
+        """
+        valid_statuses = ["idle", "working", "charging"]
+        if status not in valid_statuses:
+            return "Invalid status, please check."
+        return "Status is valid"
+    
+    def self_diagnose(self) -> None:
+        """
+        Self-diagnose the robot.
+        """
+        battery_check = self.check_battery_level(self.battery_level)
+        status_check = self.check_status(self.status)
+        print(f"Self-Diagnosis Report for {self.name}:\n{battery_check}\n{status_check}")
     
 
     

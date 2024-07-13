@@ -1,7 +1,8 @@
 # main.py
 # Code was done with the help of ChatGPT but was edited and well understood by the student.
 
-from robots import CleaningRobot, CookingRobot
+from robots import *
+
 def create_robot():
     print("\nCreate a New Robot:")
     robot_type = input("Enter robot type (cleaning/cooking): ").lower()
@@ -18,25 +19,48 @@ def create_robot():
         print("Invalid robot type. Please enter 'cleaning' or 'cooking'.")
         return None
 
+def self_diagnose(robot):
+    while True:
+        print(f"\nSelf Diagnose for Robot '{robot.name}':")
+        print("1. Check Battery Level")
+        print("2. Check Status")
+        print("3. Full Self Diagnose")
+        print("4. Exit")
+
+        choice = input("Enter your choice (1-4): ")
+        if choice == "1":
+            print(Robot.check_battery_level(robot.get_battery_level()))
+        elif choice == "2":
+            print(Robot.check_status(robot.get_status()))
+        elif choice == "3":
+            robot.self_diagnose()
+        elif choice == "4":
+            break
+        else:
+            print("Invalid choice. Please enter a valid number.")
+
 def manage_robot(robot):
     while True:
         print(f"\nManaging Robot '{robot.name}':")
         print("1. Check Status")
         print("2. Work")
         print("3. Charge")
-        print("4. Exit")
+        print("4. Self Diagnose")
+        print("5. Exit")
 
-        choice = input("Enter your choice (1-4): ")
+        choice = input("Enter your choice (1-5): ")
         if choice == "1":
-            robot.report_status()
+            print(robot.report_status())
         elif choice == "2":
             robot.work()
         elif choice == "3":
             robot.charge()
         elif choice == "4":
+            self_diagnose(robot)
+        elif choice == "5":
             break
         else:
-            print("Invalid choice. Please enter a number from 1 to 4.")
+            print("Invalid choice. Please enter a valid number.")
 
 def main():
     robots = []
@@ -58,7 +82,7 @@ def main():
                 continue
             print("\nSelect Robot to Manage:")
             for idx, robot in enumerate(robots, start=1):
-                print(f"{idx}. {robot.name}")
+                print(f"{idx}. {robot.name} ({robot.__class__.__name__})")
             selection = int(input("Enter robot number to manage: ")) - 1
             if 0 <= selection < len(robots):
                 manage_robot(robots[selection])
