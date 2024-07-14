@@ -5,18 +5,33 @@ from robots import *
 
 def create_robot():
     print("\nCreate a New Robot:")
-    robot_type = input("Enter robot type (cleaning/cooking): ").lower()
+    robot_type = input("Enter robot type (cleaning/cooking/maintenance): ").lower()
     name = input("Enter robot name: ")
-    battery_level = int(input("Enter battery level (0-100): "))
+    while True:
+        user_input = input("Enter battery level (0-100): ")
+        try:
+            battery_level = int(user_input)
+            if 0 <= battery_level <= 100:
+                break
+            else:
+                print("Battery level must be between 0 and 100.")
+        except ValueError:
+            print("Invalid input. Please enter a whole number.")
+            
     status = input("Enter status (idle, working, charging): ")
+
     if robot_type == "cleaning":
         cleaning_tool = input("Enter cleaning tool (e.g., vacuum): ")
         return CleaningRobot(name, battery_level, status, cleaning_tool)
     elif robot_type == "cooking":
         cooking_skill = input("Enter cooking skill (e.g., beginner/intermediate/expert): ")
         return CookingRobot(name, battery_level, status, cooking_skill)
+    elif robot_type == "maintenance":
+        cleaning_tool = input("Enter cleaning tool (e.g., vacuum): ")
+        cooking_skill = input("Enter cooking skill (e.g., beginner/intermediate/expert): ")
+        return MaintenanceRobot(name, battery_level, status, cleaning_tool, cooking_skill)
     else:
-        print("Invalid robot type. Please enter 'cleaning' or 'cooking'.")
+        print("Invalid robot type. Please enter 'cleaning', 'cooking', or 'maintenance'.")
         return None
 
 def self_diagnose(robot):
@@ -46,9 +61,13 @@ def manage_robot(robot):
         print("2. Work")
         print("3. Charge")
         print("4. Self Diagnose")
-        print("5. Exit")
+        if isinstance(robot, MaintenanceRobot):
+            print("5. Multi-Task")
+            print("6. Exit")
+        else:
+            print("5. Exit")
 
-        choice = input("Enter your choice (1-5): ")
+        choice = input("Enter your choice (1-6): ")
         if choice == "1":
             print(robot.report_status())
         elif choice == "2":
@@ -57,7 +76,9 @@ def manage_robot(robot):
             robot.charge()
         elif choice == "4":
             self_diagnose(robot)
-        elif choice == "5":
+        elif choice == "5" and isinstance(robot, MaintenanceRobot):
+            robot.multi_task()
+        elif choice == "5" or (choice == "6" and isinstance(robot, MaintenanceRobot)):
             break
         else:
             print("Invalid choice. Please enter a valid number.")

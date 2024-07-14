@@ -12,7 +12,7 @@ class CookingRobot(Robot):
         :param status (string): The status of the robot ('idle', 'working', 'charging').
         :param cooking_skill: str (e.g., beginner, intermediate, expert)
         """
-        super().__init__(name, battery_level, status)
+        Robot.__init__(self,name, battery_level, status)
         self.cooking_skill = cooking_skill
     
     def work(self):
@@ -20,8 +20,9 @@ class CookingRobot(Robot):
         LET HIM COOK, uses 30% battery
         """
         if self.battery_level < 30:
-            print("Battery too low, charge it")
+            print("Battery too low to cook, charge it")
         else:
+            print("Bro cooked")
             self.set_status = "working"
             self.battery_level -= 30
     

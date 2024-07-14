@@ -12,7 +12,7 @@ class CleaningRobot(Robot):
         :param status (string): The status of the robot ('idle', 'working', 'charging').
         :param cleaning_tool: str (e.g., vacuum, mop)
         """
-        super().__init__(name, battery_level, status)
+        Robot.__init__(self,name, battery_level, status)
         self.cleaning_tool = cleaning_tool
     
     def work(self):
@@ -20,8 +20,9 @@ class CleaningRobot(Robot):
         Cleans the room, uses 20% battery
         """
         if self.battery_level < 20:
-            print("Battery too low, charge it")
+            print("Battery too low to clean, charge it")
         else:
+            print("Cleaning...")
             self.set_status = "working"
             self.battery_level -= 20
     
