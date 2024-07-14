@@ -5,3 +5,5 @@ WORKDIR /app
 # Copy two directories at once to minimize layers
 COPY src ./src
 COPY tests ./tests
+
+CMD ["python3", "main.py"]
